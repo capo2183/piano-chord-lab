@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f1420">
+  <meta name="description" content="Piano Chord Lab：隨機和弦測驗、五線譜、鋼琴指法與琴鍵間隔記憶法的鋼琴和弦學習網站。">
+  <title>Piano Chord Lab｜鋼琴和弦練習</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f1420'/%3E%3Crect x='10' y='14' width='44' height='36' rx='4' fill='%23fff'/%3E%3Crect x='19' y='14' width='7' height='21' fill='%230f1420'/%3E%3Crect x='38' y='14' width='7' height='21' fill='%230f1420'/%3E%3Crect x='28.5' y='14' width='7' height='36' fill='%2322d3ee'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#question-card">跳到題目</a>
+
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22"><rect x="2" y="4" width="20" height="16" rx="2.5" fill="currentColor" opacity=".18"/><path d="M6 4v9M10.5 4v9M15 4v9M19 4v9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+      </span>
+      <h1>Piano Chord Lab</h1>
+    </div>
+    <div class="stats" aria-live="polite">
+      <span class="stat"><span class="stat-label">本次</span><b id="stat-session">0</b><span class="stat-label unit">題</span></span>
+      <span class="stat"><span class="stat-label">累計</span><b id="stat-total">0</b></span>
+      <span class="stat stat-acc" title="答對率"><span class="stat-label">答對</span><b id="stat-acc">–</b></span>
+    </div>
+  </header>
+
+  <nav class="modes" aria-label="練習模式">
+    <div class="mode-list" role="radiogroup" aria-label="選擇練習模式" id="mode-list"></div>
+    <p class="mode-desc" id="mode-desc"></p>
+  </nav>
+
+  <main class="main">
+    <section id="question-card" class="question-card" role="button" tabindex="0" aria-describedby="question-hint" aria-expanded="false">
+      <div class="q-meta">
+        <span class="q-index" id="q-index">第 1 題</span>
+        <span class="q-review" id="q-review" hidden>複習</span>
+      </div>
+      <div class="q-symbol" id="q-symbol" aria-live="polite">–</div>
+      <p class="q-hint" id="question-hint">先在鋼琴上找出組成音，再點一下揭曉答案</p>
+    </section>
+
+    <section id="answer" class="answer" aria-live="polite" aria-label="答案"></section>
+
+    <details class="settings" id="settings">
+      <summary>顯示設定與練習紀錄</summary>
+      <div class="settings-body">
+        <fieldset class="toggles">
+          <legend>逐步練習：選擇答案中要顯示的內容</legend>
+          <label class="toggle"><input type="checkbox" id="opt-names" checked> <span>音名</span></label>
+          <label class="toggle"><input type="checkbox" id="opt-gaps" checked> <span>間隔公式</span></label>
+          <label class="toggle"><input type="checkbox" id="opt-fingers" checked> <span>指法</span></label>
+        </fieldset>
+        <div class="records">
+          <h2>練習紀錄</h2>
+          <p id="storage-status" class="muted"></p>
+          <div id="weak-list" class="weak-list"></div>
+          <div id="history-list" class="history-list"></div>
+          <button type="button" class="btn btn-ghost btn-small" id="btn-reset">清除練習紀錄</button>
+        </div>
+        <div class="help">
+          <h2>使用方式</h2>
+          <ul>
+            <li>看到和弦代號後，先自己在鋼琴上找出組成音。</li>
+            <li>點題目卡片或「顯示答案」揭曉五線譜、琴鍵、指法與間隔公式。</li>
+            <li><b>間隔公式</b>：相鄰兩個要彈的琴鍵之間「隔了幾個琴鍵」（黑白鍵都算）。例如 Cmaj7 = C、E、G、B → <b>3－2－3</b>。</li>
+            <li>按「我答對了」或「我還不熟」會記錄並進入下一題；不熟的和弦會較常再次出現。</li>
+            <li>鍵盤快速鍵：空白鍵＝顯示答案／下一題、1＝我還不熟、2＝我答對了、P＝播放。</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+  </main>
+
+  <div class="action-bar" role="toolbar" aria-label="練習操作">
+    <div class="action-inner" id="actions-question">
+      <button type="button" class="btn btn-secondary" id="btn-skip" aria-label="跳過，下一題">下一題</button>
+      <button type="button" class="btn btn-primary btn-grow" id="btn-reveal">顯示答案</button>
+    </div>
+    <div class="action-inner" id="actions-answer" hidden>
+      <button type="button" class="btn btn-unsure" id="btn-unsure" aria-label="我還不熟，進入下一題">我還不熟</button>
+      <button type="button" class="btn btn-correct" id="btn-correct" aria-label="我答對了，進入下一題">我答對了</button>
+      <button type="button" class="btn btn-secondary" id="btn-next" aria-label="不記錄，下一題">下一題 →</button>
+    </div>
+  </div>
+
+  <noscript><p class="noscript">本網站需要啟用 JavaScript。</p></noscript>
+
+  <script src="js/theory.js"></script>
+  <script src="js/fingering.js"></script>
+  <script src="js/voicing.js"></script>
+  <script src="js/staff.js"></script>
+  <script src="js/keyboard.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

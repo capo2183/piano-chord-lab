@@ -1,0 +1,11 @@
+{
+  "name": "piano-chord-lab",
+  "version": "1.0.0",
+  "description": "Piano Chord Lab：互動式鋼琴和弦學習網站（純靜態，可直接部署到 GitHub Pages）",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "test:e2e": "node tests/e2e/browser.e2e.js",
+    "serve": "python3 -m http.server 8000"
+  }
+}
